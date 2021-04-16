@@ -1,1 +1,1 @@
-# DataJournalism
+permalink: /index.html
