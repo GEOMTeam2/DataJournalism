@@ -3,10 +3,18 @@
 <head>
     <link href='https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900,400italic,700italic,900italic|Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="styles/newspaper.css">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.1.0/d3.min.js"></script>
     <title>Newspaper Style </title>
     <meta name="viewport" content="width=device-width">
 <style>
+
+  .legend {
+    font-size: 12px;
+  }
+  rect {
+    stroke-width: 2;
+  }
   body{
     font-family: 'Droid Serif', serif;
     font-size: 14px;
@@ -287,6 +295,27 @@ p{
     }
 
 }
+
+.legend {
+  font-size: 50px;
+}
+rect {
+  stroke-width: 2;
+}
+.tooltip{
+position: absolute;
+text-align: center;
+width: 100px;
+height: 28px;
+padding: 2px;
+font: 18px sans-serif;
+border: 0px;
+border-radius: 8px;
+color:black;
+<!--box-shadow: -3px 3px 15px #888888;-->
+opacity:0;
+
+}
 </style>
 
 </head>
@@ -449,22 +478,224 @@ p{
             })
             </script>
 
-
+                <div style=" margin:200 auto;">
+                <iframe width="400" height="315" src="https://www.youtube.com/embed/AedTWebJJnM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>\
+                <p>Watch this video to see how Syrian Refugees are welcomed to Canada. </p>
+                </div>
             </div>
+
+
         <div class="collumn"><div class="head"><span class="headline hl1">Displacement of Syrian Refugees</span><p><span class="headline hl2">by Nicholas Pontone</span></p></div>In November 2015 the Canadian Government committed to welcome Syrians displaced Syria under Operation Syrian Refugees. This operation was Canada’ response to the humanitarian crisis in Syria. Over 100 days thanks to a collaborative effort between private sponsors, non-government organizations, provincial, territorial, and municipal governments,</p> <p><span class="citation">Canada welcomed more than 25,000 refugees in 100 days.</span> </p>
             <p>Relocating such a large amount of people in such a small amount of time was no small task. The United Nations Refugee Agency (UNHCR) and private sponsors identified and contacted Syrian refugees required assistance. Contacted individuals and families were sent to Temporary visa processing centres were created in Jordan, Lebanon, and Turkey. The creation of these centres required the relation of hundreds of staff to these countries. The International Organization for Migration (IOM) chartered flights and worked with the governments of Jordan to ensure all identified refugees had transportation to Canada. Deciding where to send Syrian refugees was based on a list of criteria. Whether or not they had family members in Canada, the availability of schools, housing, language training, and other services. The need for specific services such as medical care for disabilities. Data shows that the majority of refugees entering the country in this time were resettled in the province of Ontario, followed by Quebec. The 2019 Syrian Outcome report, which is a report published by Immigration, Refugees, and Citizenship Canada that provides an overview of the outcome of Syrian refugees who were resettled during this time shows that the prospects of Syrians resettled to Canada are improving as they are getting the help they need, feel welcome in their communities, and their language skills and employment prospects are improving. Most Syrians reported as having a strong sense of belonging within their country, local community, and province/territory. A large portion of Syrians have accessed federally-funded language services, and have reported speaking enough English to complete day-to-day tasks. A lower ability was reported for completing tasks in French. Syrians had low employment to begin with compared to other resettled refugees, but are now on trajectory to match the global average. In addition to this, employment earnings have also increased. Even though integration outcomes are positive, there are still some challenges that remain. Employment rates have generally been improving, but for those who haven’t found employment yet report issues with food security.
 Language barriers have also been recognized as a significant issue. Osanna Jakmajian, a Syrian refugee resettled to Montreal said this in an interview with the CBC "If you don't know French, and you just speak in English, sometimes you feel guilty."
 In combination with stigmas surrounding mental health, language has been reported as one of the major barriers to Syrians accessing healthcare. While a large majority of Syrian children are reported as being enrolled in school, many are facing social and linguistic barriers.
 Immigration, Refugees and Citizenship Canada states that overall, the experiences of Syrians are in line with other resettled refugee populations. Syrians are still early into their resettlement and the situation is constantly evolving.
 </p></div>
-        <div class="collumn"><div class="head"><span class="headline hl3">Data Journalism</span><p><span class="headline hl4">Refrences </span></p></div><p>Government of Canada. (2021). Syrian Refugees - Monthly IRCC Updates. Retrieved from: https://open.canada.ca/data/en/dataset/01c85d28-2a81-4295-9c06-4af792a7c209 </p>
+        <div class="collumn">
+          <div class="head"><span class="headline hl3">Mother Tongue of Syrian Refugees that immigrated to Canada between 2015-2021</span><p><span class="headline hl4">
+          <p> Nationally </p>
+          <div>
+
+            <! start of first visualization >
+          <script src="http://d3js.org/d3.v3.min.js"></script>
+          <div id = "svgContent"></div>
+
+          <style>
+              .legend {
+                font-size: 50px;
+              }
+              rect {
+                stroke-width: 2;
+              }
+              .tooltip{
+              position: absolute;
+              text-align: center;
+              width: 100px;
+              height: 28px;
+              padding: 2px;
+              font: 18px sans-serif;
+              border: 0px;
+              border-radius: 8px;
+              color:black;
+              <!--box-shadow: -3px 3px 15px #888888;-->
+              opacity:0;
+
+            }
+
+            </style>
+            <body>
+                <script>var data = [
+                  { label: 'Arabic', count: 81975 },
+                  { label: 'Armenian', count: 4100},
+                  { label: 'Kurdish', count: 2135 },
+                  { label: 'Assyrian', count: 340 },
+                  { label: 'Turkmen', count: 130 },
+                  { label: 'English', count: 130},
+                  { label: 'Other', count: 425}
+                ];
+          var margin = {top:40,left:40,right:40,bottom:40};
+          width = 350;
+          height = 350;
+          radius = Math.min(width-100,height-100)/2;
+          var color = d3.scale.ordinal()
+          .range(["#587e76", "#dac292", "#8b6f47","#a96e5b","#878f99","#a2b9bc","#7ab51d","#ff7f0e","#b9936c"]);
+          var arc = d3.svg.arc()
+               .outerRadius(radius -130)
+               .innerRadius(radius - 10);
+          var arcOver = d3.svg.arc()
+          .outerRadius(radius +50)
+          .innerRadius(0);
+
+          var svg = d3.select("#svgContent").append("svg")
+                .attr("width",width)
+                .attr("height",height)
+                .append("g")
+                .attr("transform","translate("+width/2+","+height/2+")");
+
+          div = d3.select("body")
+          .append("div")
+          .attr("class", "tooltip");
+
+          var pie = d3.layout.pie()
+                .sort(null)
+                .value(function(d){return d.count;});
+
+          var g = svg.selectAll(".arc")
+              .data(pie(data))
+              .enter()
+              .append("g")
+              .attr("class","arc")
+               .on("mousemove",function(d){
+                  var mouseVal = d3.mouse(this);
+                  div.style("display","none");
+                  div
+                  .html("Language: "+d.data.label+"</br>"+"Population: "+d.data.count)
+                  .style("left", (d3.event.pageX+12) + "px")
+                  .style("top", (d3.event.pageY-10) + "px")
+                  .style("opacity", 1)
+                  .style("display","block");
+              })
+              .on("mouseout",function(){div.html(" ").style("display","none");})
+              .on("click",function(d){
+                  if(d3.select(this).attr("transform") == null){
+                  d3.select(this).attr("transform","translate(42,0)");
+                  }else{
+                      d3.select(this).attr("transform",null);
+                  }
+              });
+              g.append("path")
+              .attr("d",arc)
+              .style("fill",function(d){return color(d.data.count);});
+              </script>
+            </div>
+
+            <!legend>
+              <img src="images/canl.png"style="width:300px;height:200px;">
+
+
+            <! start of second visualization >
+            <script src="http://d3js.org/d3.v3.min.js"></script>
+            <div id = "svgContent2"></div>
+
+            <style>
+                .legend {
+                  font-size: 50px;
+                }
+                rect {
+                  stroke-width: 2;
+                }
+                .tooltip{
+                position: absolute;
+                text-align: center;
+                width: 100px;
+                height: 28px;
+                padding: 2px;
+                font: 18px sans-serif;
+                border: 0px;
+                border-radius: 8px;
+                color:black;
+                <!--box-shadow: -3px 3px 15px #888888;-->
+                opacity:0;
+
+              }
+
+              </style>
+              <body>
+                  <script>var data = [
+                    { label: 'Arabic', count: 1415 },
+                    { label: 'Armenian', count: 70},
+                    { label: 'Other', count: 10}
+                  ];
+            var margin = {top:40,left:40,right:40,bottom:40};
+            width = 350;
+            height = 350;
+            radius = Math.min(width-100,height-100)/2;
+            var color = d3.scale.ordinal()
+            .range(["#587e76", "#dac292", "#cfe2f3ff"]);
+            var arc = d3.svg.arc()
+                 .outerRadius(radius -130)
+                 .innerRadius(radius - 10);
+            var arcOver = d3.svg.arc()
+            .outerRadius(radius +50)
+            .innerRadius(0);
+
+            var svg = d3.select("#svgContent2").append("svg")
+                  .attr("width",width)
+                  .attr("height",height)
+                  .append("g")
+                  .attr("transform","translate("+width/2+","+height/2+")");
+
+            div = d3.select("body")
+            .append("div")
+            .attr("class", "tooltip");
+
+            var pie = d3.layout.pie()
+                  .sort(null)
+                  .value(function(d){return d.count;});
+
+
+
+            var g = svg.selectAll(".arc")
+                .data(pie(data))
+                .enter()
+                .append("g")
+                .attr("class","arc")
+                 .on("mousemove",function(d){
+                    var mouseVal = d3.mouse(this);
+                    div.style("display","none");
+                    div
+                    .html("Language: "+d.data.label+"</br>"+"Population: "+d.data.count)
+                    .style("left", (d3.event.pageX+12) + "px")
+                    .style("top", (d3.event.pageY-10) + "px")
+                    .style("opacity", 1)
+                    .style("display","block");
+                })
+                .on("mouseout",function(){div.html(" ").style("display","none");})
+                .on("click",function(d){
+                    if(d3.select(this).attr("transform") == null){
+                    d3.select(this).attr("transform","translate(42,0)");
+                    }else{
+                        d3.select(this).attr("transform",null);
+                    }
+                });
+
+                g.append("path")
+                .attr("d",arc)
+                .style("fill",function(d){return color(d.data.count);});
+                </script>
+
+                <!legend>
+                  <img src="images/ontl.png"style="width:300px;height:200px;">
+
+
+          <p> Disclaimer. Does not include those that did not disclose their province of reolation in the survey
+
+          <div class="head"><span class="headline hl3">Data Journalism</span><p><span class="headline hl4">Refrences </span></p></div><p>Government of Canada. (2021). Syrian Refugees - Monthly IRCC Updates. Retrieved from: https://open.canada.ca/data/en/dataset/01c85d28-2a81-4295-9c06-4af792a7c209 </p>
         <p></p>Government of Canada. (2021). Syrian Outcomes Report. Retrieved from: https://www.canada.ca/en/immigration-refugees-citizenship/corporate/reports-statistics/evaluations/syrian-outcomes-report-2019.html
 </p>   <p> Julianna Perkins. (2021). 5 years in, Syrian refugees say it's been hard but they are adjusting to Montreal. Retrieved from: https://www.cbc.ca/news/canada/montreal/montreal-syrian-refugees-five-years-1.5889989
+  <p> Canada - Admissions of Syrian Refugees under Canada’s Syrian Refugee Resettlement Commitment by Province/Territory of Intended Destination, Mother Tongue and Immigration Category' dataset </p>
    </p></div>
-
-					<p>
-    </div>
 </div>
-
 </body>
 </html>
+
